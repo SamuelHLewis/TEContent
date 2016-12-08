@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
 suppressPackageStartupMessages(library("argparse"))
+suppressPackageStartupMessages(library("Biostrings"))
 
 #########################
 # user argument parsing #
@@ -15,8 +16,16 @@ parser$add_argument("-t", "--tefile", type="character", help="Transposable eleme
 # collect arguments
 args <- parser$parse_args()
 # assign arguments to variables
-Genome = args$genomefile
-TE = args$tefile
+GenomeFile = args$genomefile
+TEFile = args$tefile
 
-sprintf("Input genome file = %s", Genome)
-sprintf("Input TE file = %s", TE)
+sprintf("Input genome file = %s", GenomeFile)
+sprintf("Input TE file = %s", TEFile)
+
+####################
+# size calculation #
+####################
+
+# read in genome file
+Genome = readFASTA(GenomeFile)
+# file.info(Genome)
