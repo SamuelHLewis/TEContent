@@ -26,6 +26,15 @@ sprintf("Input TE file = %s", TEFile)
 # size calculation #
 ####################
 
-# read in genome file
-Genome = readFASTA(GenomeFile)
-# file.info(Genome)
+# read in genome file and calculate total size
+Genome = readDNAStringSet(GenomeFile)
+GenomeSize = sum(width(Genome))
+sprintf("Genome size (bp) = %i",GenomeSize)
+
+# read in TE file and calculate total size
+TE = readDNAStringSet(TEFile)
+TESize = sum(width(TE))
+sprintf("TE content (bp) = %i",TESize)
+
+TErel = (TESize/GenomeSize)*100
+sprintf("TE content (%%) = %f",TErel)
