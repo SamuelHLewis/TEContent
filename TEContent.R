@@ -3,6 +3,26 @@
 suppressPackageStartupMessages(library("argparse"))
 suppressPackageStartupMessages(library("Biostrings"))
 
+TEContent <- function(GenomeFile,TEFile) {
+	sprintf("Input genome file = %s", GenomeFile)
+	sprintf("Input TE file = %s", TEFile)
+	# read in genome file and calculate total size
+	Genome = readDNAStringSet(GenomeFile)
+	GenomeSize = sum(width(Genome))
+	sprintf("Genome size (bp) = %i",GenomeSize)
+	# read in TE file and calculate total size
+	TE = readDNAStringSet(TEFile)
+	TESize = sum(width(TE))
+	sprintf("TE content (bp) = %i",TESize)
+	TErel = (TESize/GenomeSize)*100
+	sprintf("TE content (%%) = %f",TErel)
+ 	# format output
+	titles=c("Genome size (bp)","TE content (bp)","TE content (%)")
+	stats=c(GenomeSize,TESize,TErel)
+	output=rbind(titles,stats)
+	return(output)
+}
+
 #########################
 # user argument parsing #
 #########################
@@ -19,22 +39,9 @@ args <- parser$parse_args()
 GenomeFile = args$genomefile
 TEFile = args$tefile
 
-sprintf("Input genome file = %s", GenomeFile)
-sprintf("Input TE file = %s", TEFile)
-
 ####################
-# size calculation #
+# function calling #
 ####################
 
-# read in genome file and calculate total size
-Genome = readDNAStringSet(GenomeFile)
-GenomeSize = sum(width(Genome))
-sprintf("Genome size (bp) = %i",GenomeSize)
+TEContent(GenomeFile,TEFile)
 
-# read in TE file and calculate total size
-TE = readDNAStringSet(TEFile)
-TESize = sum(width(TE))
-sprintf("TE content (bp) = %i",TESize)
-
-TErel = (TESize/GenomeSize)*100
-sprintf("TE content (%%) = %f",TErel)
