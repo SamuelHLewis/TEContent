@@ -5,18 +5,13 @@ suppressPackageStartupMessages(library("Biostrings"))
 suppressPackageStartupMessages(library("ggplot2"))
 
 TEContent <- function(GenomeFile,TEFile) {
-	sprintf("Input genome file = %s", GenomeFile)
-	sprintf("Input TE file = %s", TEFile)
 	# read in genome file and calculate total size
 	Genome = readDNAStringSet(GenomeFile)
-	GenomeSize = sum(width(Genome))
-	sprintf("Genome size (bp) = %i",GenomeSize)
+	GenomeSize = sum(as.numeric(width(Genome)))
 	# read in TE file and calculate total size
 	TE = readDNAStringSet(TEFile)
 	TESize = sum(width(TE))
-	sprintf("TE content (bp) = %i",TESize)
 	TErel = (TESize/GenomeSize)*100
-	sprintf("TE content (%%) = %f",TErel)
  	# format output
 	output=c(GenomeSize,TESize,TErel)
 	return(output)
@@ -49,10 +44,10 @@ if (length(GenomeFiles)==length(TEFiles)) {
 ####################
 
 # empty vectors to hold results for each genome
-Genomes=NULL
-GenomeSizes=NULL
-TESizes=NULL
-TEProps=NULL
+Genomes=character()
+GenomeSizes=integer()
+TESizes=integer()
+TEProps=numeric()
 
 # TEContent called on each genome-TE file pair, and results sorted into separate vectors
 for (i in 1:length(GenomeFiles)){
@@ -63,12 +58,9 @@ for (i in 1:length(GenomeFiles)){
 	TESizes = append(TESizes,as.integer(results[[2]]))
 	TEProps = append(TEProps,as.double(results[[3]]))
 }
-# results reformatted to matrix
-Output=as.data.frame(cbind(Genomes,GenomeSizes,TESizes,TEProps))
-print(Output)
 
 # plot genome size vs TE proportion
-plot=ggplot(data=Output)
+plot=ggplot()
 plot=plot+theme_bw()
 plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Genomes),size=4)
 pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
