@@ -49,8 +49,8 @@ if (length(SpeciesNames)==length(GenomeFiles) && length(SpeciesNames)==length(TE
 # empty vectors to hold results for each genome
 Species=character()
 Genomes=character()
-GenomeSizes=integer()
-TESizes=integer()
+GenomeSizes=numeric()
+TESizes=numeric()
 TEProps=numeric()
 
 # TEContent called on each genome-TE file pair, and results sorted into separate vectors
@@ -59,8 +59,8 @@ for (i in 1:length(GenomeFiles)){
 	results=TEContent(GenomeFiles[i],TEFiles[i])
 	Species = append(Species,SpeciesNames[i])
 	Genomes = append(Genomes,GenomeFiles[i])
-	GenomeSizes = append(GenomeSizes,as.integer(results[[1]]))
-	TESizes = append(TESizes,as.integer(results[[2]]))
+	GenomeSizes = append(GenomeSizes,as.numeric(results[[1]]/1000000))
+	TESizes = append(TESizes,as.numeric(results[[2]]/1000000))
 	TEProps = append(TEProps,as.double(results[[3]]))
 }
 
@@ -73,5 +73,6 @@ plot=ggplot()
 plot=plot+theme_bw()
 plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Species),size=4)
 pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
+plot=plot+xlab("Genome size (Mb)")+ylab("TE content (%)")
 plot
 dev.off()
