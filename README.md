@@ -13,5 +13,5 @@ Requires the following R packages:
 # Usage
 Basic usage is:
 ```bash
-TEContent.R --genomefile=genome.fas --tefile=TE.fas
+TEContent.R --species=species1 --genomefile=genome.fas --tefile=TE.fas
 ```
