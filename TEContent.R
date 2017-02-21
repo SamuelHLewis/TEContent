@@ -72,6 +72,8 @@ print(Output)
 plot=ggplot()
 plot=plot+theme_bw()
 plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Species),size=4)
+plot=plot+geom_text(aes(x=GenomeSizes,y=TEProps,colour=Species,label=Species),hjust=-0.2)
+plot=plot+theme(legend.position="none")
 pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
 plot=plot+xlab("Genome size (Mb)")+ylab("TE content (%)")
 plot
