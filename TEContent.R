@@ -29,12 +29,15 @@ parser$add_argument("-s", "--species", type="character", help="Genome fasta file
 parser$add_argument("-f", "--genomefiles", type="character", help="Genome fasta file")
 # parse input TE filename
 parser$add_argument("-t", "--tefiles", type="character", help="Transposable element fasta file")
+# parse phenotype status
+parser$add_argument("-p", "--phenotype", type="character", help="Phenotype observed in each genome/species")
 # collect arguments
 args <- parser$parse_args()
 # assign arguments to variables
 SpeciesNames = strsplit(args$species,",")[[1]]
 GenomeFiles = strsplit(args$genomefiles,",")[[1]]
 TEFiles = strsplit(args$tefiles,",")[[1]]
+Phenotype = strsplit(args$phenotype,",")[[1]]
 # check that the same number of species names, genome files and TE files have been given
 if (length(SpeciesNames)==length(GenomeFiles) && length(SpeciesNames)==length(TEFiles) && length(GenomeFiles)==length(TEFiles)) {
 	sprintf("Each species has an accompanying genome file & TE file - looking good")
@@ -71,9 +74,8 @@ print(Output)
 # plot genome size vs TE proportion
 plot=ggplot()
 plot=plot+theme_bw()
-plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Species),size=4)
-plot=plot+geom_text(aes(x=GenomeSizes,y=TEProps,colour=Species,label=Species),hjust=-0.2)
-plot=plot+theme(legend.position="none")
+plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Phenotype),size=4)
+plot=plot+geom_text(aes(x=GenomeSizes,y=TEProps,colour=Phenotype,label=Species),hjust=-0.2)
 pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
 plot=plot+xlab("Genome size (Mb)")+ylab("TE content (%)")
 plot
