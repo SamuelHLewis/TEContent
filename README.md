@@ -25,8 +25,11 @@ TEContent takes four mandatory arguments:
 
 	--phenotype (comma-separated list of phenotypes corresponding to each species)
 
-TEContent also accepts two optional flags:
+TEContent also accepts three optional flags:
 
 	--logx (use log10 scale for x axis)
 
 	--logy (use log10 scale for y axis)
+
+	--boxplot (generate boxplot output as well as scatterplot)
+
