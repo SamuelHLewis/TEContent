@@ -35,6 +35,8 @@ parser$add_argument("-p", "--phenotype", type="character", help="Phenotype obser
 parser$add_argument("-x", "--logx", action="store_true", default=FALSE, help="Optional flag to plot x axis using log10 scale")
 # optional flag for log10 scale on y axis
 parser$add_argument("-y", "--logy", action="store_true", default=FALSE, help="Optional flag to plot y axis using log10 scale")
+# optional flag for boxplot output
+parser$add_argument("-b", "--boxplot", action="store_true", default=FALSE, help="Optional flag to output boxplot as well as scatterplot")
 # collect arguments
 args <- parser$parse_args()
 # assign arguments to variables
@@ -90,3 +92,17 @@ pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
 plot=plot+xlab("Genome size (Mb)")+ylab("TE content (%)")
 plot
 dev.off()
+
+# output boxplot if specified
+if ( args$boxplot ){
+boxplot=ggplot()
+boxplot=boxplot+theme_bw()
+boxplot=boxplot+geom_boxplot(aes(x=Phenotype,y=TEProps,fill=Phenotype))
+boxplot=boxplot+theme(legend.position="none")
+boxplot=boxplot+xlab("Phenotype")+ylab("TE content (%)")
+pdf(file = "TEContentboxplot.pdf",width=7,height=7)
+print(boxplot)
+dev.off()
+sprintf("Boxplot written")
+}
+
