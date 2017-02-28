@@ -31,6 +31,10 @@ parser$add_argument("-f", "--genomefiles", type="character", help="Genome fasta 
 parser$add_argument("-t", "--tefiles", type="character", help="Transposable element fasta file")
 # parse phenotype status
 parser$add_argument("-p", "--phenotype", type="character", help="Phenotype observed in each genome/species")
+# optional flag for log10 scale on x axis
+parser$add_argument("-x", "--logx", action="store_true", default=FALSE, help="Optional flag to plot x axis using log10 scale")
+# optional flag for log10 scale on y axis
+parser$add_argument("-y", "--logy", action="store_true", default=FALSE, help="Optional flag to plot y axis using log10 scale")
 # collect arguments
 args <- parser$parse_args()
 # assign arguments to variables
@@ -68,7 +72,7 @@ for (i in 1:length(GenomeFiles)){
 }
 
 # results reformatted to matrix (for screen output only)
-Output=as.data.frame(cbind(Species,Genomes,GenomeSizes,TESizes,TEProps))
+Output=as.data.frame(cbind(Species,Genomes,GenomeSizes,TESizes,TEProps),stringsAsFactors=FALSE)
 print(Output)
 
 # plot genome size vs TE proportion
@@ -76,6 +80,12 @@ plot=ggplot()
 plot=plot+theme_bw()
 plot=plot+geom_point(aes(x=GenomeSizes,y=TEProps,colour=Phenotype),size=4)
 plot=plot+geom_text(aes(x=GenomeSizes,y=TEProps,colour=Phenotype,label=Species),hjust=-0.2)
+if ( args$logx ){
+	plot=plot+scale_x_log10()
+}
+if ( args$logy ){
+	plot=plot+scale_y_log10()
+}
 pdf(file = "TEContentplot.pdf",width=10.5,height=6.75)
 plot=plot+xlab("Genome size (Mb)")+ylab("TE content (%)")
 plot
